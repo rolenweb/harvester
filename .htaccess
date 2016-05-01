@@ -1,0 +1,32 @@
+#AuthType Basic
+#AuthName "Specifiers"
+# Can not set relative path for .htpasswd, so it is possible to use link:
+# ln -s /var/www/site_root/.htpasswd /var/www/.htpasswd-specifiers
+#AuthUserFile /var/www/.htpasswd-specifiers
+#Require valid-user
+
+
+
+Options +FollowSymLinks
+IndexIgnore */*
+RewriteEngine on
+ 
+# Если запрос начинается с /admin, то заменяем на /backend/web/
+RewriteCond %{REQUEST_URI} ^/admin
+RewriteRule ^admin\/?(.*) /advanced/backend/web/$1
+ 
+# Добавляем другой запрос /frontend/web/$1
+RewriteCond %{REQUEST_URI} !^/(advanced/frontend/web|advanced/backend/web|admin)
+RewriteRule (.*) /advanced/frontend/web/$1
+ 
+# Если frontend запрос
+RewriteCond %{REQUEST_URI} ^/advanced/frontend/web
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /advanced/frontend/web/index.php
+ 
+# Если backend запрос
+RewriteCond %{REQUEST_URI} ^/advanced/backend/web
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /advanced/backend/web/index.php
