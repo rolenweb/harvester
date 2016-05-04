@@ -40,6 +40,14 @@ echo Html::beginTag('div',['class' => 'position-yp-index']);
                     }
                 ],
                 [
+                    'attribute'=>'current',
+                    'label' => 'process',
+                    'content'=>function($data){
+                        $process = $data->process();
+                        return $process[0].' from '.$process[1].' or '.round($process[0]/$process[1]*100).'%';
+                    }
+                ],
+                [
                     'attribute'=>'end',
                     'content'=>function($data){
                         return $data->endCity->name.', '.$data->endCity->state;

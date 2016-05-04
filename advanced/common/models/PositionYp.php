@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use common\models\CityUs;
 
 /**
  * This is the model class for table "position".
@@ -76,5 +77,24 @@ class PositionYp extends \yii\db\ActiveRecord
     public function getEndCity()
     {
         return $this->hasOne(CityUs::className(), ['id' => 'end']);
+    }
+
+    public function process()
+    {
+        $n = 1;
+        $current = $this->currentCity;
+        $cities = CityUs::find()->select('id')->all();
+        if ($cities !== NULL) {
+            foreach ($cities as $city) {
+                if ($city->id > $current->id) {
+                    break;
+                }
+                $n++;
+            }
+        }
+        return [
+            '0' => $n,
+            '1' => count($cities),
+        ];
     }
 }
