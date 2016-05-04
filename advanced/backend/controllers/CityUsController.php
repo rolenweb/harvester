@@ -5,6 +5,7 @@ namespace backend\controllers;
 use Yii;
 use common\models\CityUs;
 use common\models\CityUsSearch;
+use common\models\KeysYp;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -68,6 +69,7 @@ class CityUsController extends Controller
     {
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'keysYp' => KeysYp::find()->all(),
         ]);
     }
 

@@ -32,12 +32,14 @@ class YpController extends Controller
                             if ($content['info']['http_code'] == 200) {
                                 $n_pages = $this->getNpage($content);
                                 $pages = $this->parsePage($key->key, str_replace(' ', '+', $city->name).'%2C+'.$city->state, $n_pages, 'div.info > h3.n > a');
-                                if (isset($pages)) {
+                                
+                                if ($pages !== NULL) {
                                     foreach ($pages as $pid => $page) {
                                         $this->parseProperty($key, $city, $page, $pid);
                                     }
+                                    $this->changePosition($position);
                                 }
-
+                                
                             }
                         }
                     }
@@ -152,18 +154,38 @@ class YpController extends Controller
 
     public function saveProperty($key,$city,$ptid,$value, $pid)
     {
-        $var = [];
-        $var = [
-            'key_id' => $key->id,
-            'city_id' => $city->id,
-            'property_type_id' => $ptid,
-            'value' => $value,
-            'number' => $pid,
-        ];
-        $new_property = new PropertyYp();
-        $new_property->attributes = $var;
-        $new_property->save();
+        $old_property = PropertyYp::find()->where([
+                'key_id' => $key->id,
+                'city_id' => $city->id,
+                'property_type_id' => $ptid,
+                'value' => $value,
+                'number' => $pid,
+            ])->limit(1)->one();
+        if ($old_property === NULL) {
+            $var = [];
+            $var = [
+                'key_id' => $key->id,
+                'city_id' => $city->id,
+                'property_type_id' => $ptid,
+                'value' => $value,
+                'number' => $pid,
+            ];
+            $new_property = new PropertyYp();
+            $new_property->attributes = $var;
+            $new_property->save();
+        }
         return;
+    }
+
+    public function changePosition($position)
+    {
+        $next = CityUs::next($position->current);
+        if ($next !== NULL) {
+            $position->current = $next;
+            $position->save();
+        }
+        return;
+        
     }
 }
 ?>

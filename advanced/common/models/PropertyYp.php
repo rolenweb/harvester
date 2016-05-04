@@ -60,4 +60,19 @@ class PropertyYp extends \yii\db\ActiveRecord
             'updated_at' => 'Updated At',
         ];
     }
+
+    public static function countItem($kid, $cid)
+    {
+        return self::find()->where(['and','key_id = :kid', 'city_id = :cid'],[':kid' => $kid, ':cid' => $cid])->select(['number'])->indexBy('number')->all();
+    }
+
+    public static function forItem($kid, $cid, $number)
+    {
+        return self::find()->where(['and','key_id = :kid', 'city_id = :cid', 'number = :number'],[':kid' => $kid, ':cid' => $cid, ':number' => $number])->orderBy(['property_type_id' => SORT_ASC])->all();
+    }
+
+    public function getType()
+    {
+        return $this->hasOne(PropertyTypeYp::className(), ['id' => 'property_type_id']);
+    }
 }

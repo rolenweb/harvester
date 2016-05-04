@@ -79,4 +79,9 @@ class CityUs extends \yii\db\ActiveRecord
             return null;
         }
     }
+
+    public function getPropertiesYp()
+    {
+        return $this->hasMany(PropertyYp::className(), ['city_id' => 'id']);
+    }
 }
