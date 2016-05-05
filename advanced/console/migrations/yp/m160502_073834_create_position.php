@@ -23,8 +23,8 @@ class m160502_073834_create_position extends Migration
             'start' => $this->integer(),
             'current' => $this->integer(),
             'end' => $this->integer(),
-            'created_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
-            'updated_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
+            'created_at' => $this->integer()->notNull(),
+            'updated_at' => $this->integer()->notNull()
         ]);
     }
 

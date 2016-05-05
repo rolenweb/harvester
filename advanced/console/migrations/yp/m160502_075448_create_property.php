@@ -23,8 +23,8 @@ class m160502_075448_create_property extends Migration
             'city_id' => $this->integer(),
             'property_type_id' => $this->integer(),
             'value' => $this->string(),
-            'created_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
-            'updated_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
+            'created_at' => $this->integer()->notNull(),
+            'updated_at' => $this->integer()->notNull()
         ]);
     }
 

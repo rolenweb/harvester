@@ -3,7 +3,7 @@
 namespace common\models;
 
 use Yii;
-
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "keys".
@@ -21,6 +21,13 @@ class KeysYp extends \yii\db\ActiveRecord
     public static function tableName()
     {
         return 'keys';
+    }
+
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::className(),
+        ];
     }
 
     /**

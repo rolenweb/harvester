@@ -24,8 +24,8 @@ class m160502_072007_create_city_us extends Migration
             'state' => $this->string(),
             'lon' => $this->float(),
             'lat' => $this->float(),
-            'created_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
-            'updated_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
+            'created_at' => $this->integer()->notNull(),
+            'updated_at' => $this->integer()->notNull()
         ]);
     }
 

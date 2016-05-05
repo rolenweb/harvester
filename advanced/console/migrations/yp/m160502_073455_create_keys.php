@@ -20,8 +20,8 @@ class m160502_073455_create_keys extends Migration
         $this->createTable('keys', [
             'id' => $this->primaryKey(),
             'key' => $this->string(),
-            'created_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
-            'updated_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
+            'created_at' => $this->integer()->notNull(),
+            'updated_at' => $this->integer()->notNull()
         ]);
     }
 

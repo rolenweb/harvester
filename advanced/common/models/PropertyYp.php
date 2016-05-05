@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "property".
@@ -23,6 +24,13 @@ class PropertyYp extends \yii\db\ActiveRecord
     public static function tableName()
     {
         return 'property';
+    }
+
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::className(),
+        ];
     }
 
     /**

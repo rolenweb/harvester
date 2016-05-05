@@ -22,8 +22,8 @@ class m160502_074356_create_schedule extends Migration
             'name' => $this->string(),
             'key_id' => $this->integer(),
             'status' => $this->smallInteger()->notNull()->defaultValue(5),
-            'created_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
-            'updated_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
+            'created_at' => $this->integer()->notNull(),
+            'updated_at' => $this->integer()->notNull()
         ]);
     }
 

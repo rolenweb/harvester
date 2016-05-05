@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "schedule".
@@ -25,6 +26,13 @@ class ScheduleYp extends \yii\db\ActiveRecord
     public static function tableName()
     {
         return 'schedule';
+    }
+
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::className(),
+        ];
     }
 
     /**

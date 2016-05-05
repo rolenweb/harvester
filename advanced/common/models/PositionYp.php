@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
 use common\models\CityUs;
 
 /**
@@ -24,6 +25,13 @@ class PositionYp extends \yii\db\ActiveRecord
     public static function tableName()
     {
         return 'position';
+    }
+
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::className(),
+        ];
     }
 
     /**

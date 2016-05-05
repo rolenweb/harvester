@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "city_us".
@@ -23,6 +24,13 @@ class CityUs extends \yii\db\ActiveRecord
     public static function tableName()
     {
         return 'city_us';
+    }
+
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::className(),
+        ];
     }
 
     /**
