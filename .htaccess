@@ -1,9 +1,9 @@
-#AuthType Basic
-#AuthName "Specifiers"
+AuthType Basic
+AuthName "Specifiers"
 # Can not set relative path for .htpasswd, so it is possible to use link:
 # ln -s /var/www/site_root/.htpasswd /var/www/.htpasswd-specifiers
-#AuthUserFile /var/www/.htpasswd-specifiers
-#Require valid-user
+AuthUserFile /var/www/admin/www/harvester.devsym.ru/.htpasswd
+Require valid-user
 
 
 
