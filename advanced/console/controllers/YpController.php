@@ -62,7 +62,7 @@ class YpController extends Controller
             }else{
                 $url = 'http://www.yellowpages.com/search?search_terms='.$search.'&geo_location_terms='.$loc.'&page='.$page;
             }
-            var_dump($url);
+            //var_dump($url);
             $client = new CurlClient();
             return $client->setUrl($url)->getContentWithInfo(); 
         }
