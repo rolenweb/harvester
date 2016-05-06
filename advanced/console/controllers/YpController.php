@@ -18,7 +18,7 @@ class YpController extends Controller
     public function actionIndex($id)
     {
         $schedule = ScheduleYp::findOne($id);
-        if ($schedule !== NULL && $schedule->status = ScheduleYp::ACTIVE) {
+        if ($schedule !== NULL && $schedule->status == ScheduleYp::ACTIVE) {
             if ($schedule->end !== NULL || ($schedule->start === NULL && $schedule->end === NULL)) {
                 ScheduleYp::start($id);
                 $position = PositionYp::find()->where(['key_id' => $schedule->key_id])->limit(1)->one();
