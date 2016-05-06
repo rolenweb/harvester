@@ -32,7 +32,7 @@ class YpController extends Controller
                             if ($content['info']['http_code'] == 200) {
                                 $n_pages = $this->getNpage($content);
                                 $pages = $this->parsePage($key->key, str_replace(' ', '+', $city->name).'%2C+'.$city->state, $n_pages, 'div.info > h3.n > a');
-                                var_dump($pages);
+                                //var_dump($pages);
                                 if ($pages !== NULL) {
                                     foreach ($pages as $pid => $page) {
                                         $this->parseProperty($key, $city, $page, $pid);
