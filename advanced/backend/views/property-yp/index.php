@@ -30,7 +30,13 @@ $this->params['breadcrumbs'][] = $this->title;
             'property_type_id',
             'value',
             'number',
-            // 'created_at',
+            [
+                'attribute'=>'created_at',
+                'label' => 'Created',
+                'content'=>function($data){
+                    return date("Y-m-d H:i:s", $data->created_at);
+                }
+            ],
             // 'updated_at',
 
             ['class' => 'yii\grid\ActionColumn'],
