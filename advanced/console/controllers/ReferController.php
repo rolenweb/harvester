@@ -1,7 +1,9 @@
 <?php
 namespace console\controllers;
 
+use yii;
 use yii\console\Controller;
+use common\models\UrlRefer;
 
 class ReferController extends Controller
 {
@@ -12,7 +14,10 @@ class ReferController extends Controller
             $this->refer('http://japanesecomposers.info/ja/modules/popnupblog/index.php?postid=243','http://sedrfty777.com');
         }
         if ($mode == 'checker') {
-            var_dump($this->checker('http://japanesecomposers.info/ja/modules/popnupblog/index.php?postid=243'));
+            var_dump($this->checker('http://worldsportsclub.org/modules/popnupblog/index.php?postid=149'));
+        }
+        if ($mode == 'load') {
+            $this->loadUrlFromFile();
         }
         
     }
@@ -22,6 +27,7 @@ class ReferController extends Controller
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_NOBODY,true);
+        curl_setopt($curl, CURLOPT_TIMEOUT,10);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER,true);
 
         curl_setopt($curl, CURLOPT_REFERER, $referer);
@@ -36,6 +42,7 @@ class ReferController extends Controller
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_HEADER, true);
         curl_setopt($curl, CURLOPT_NOBODY,true);
+        curl_setopt($curl, CURLOPT_TIMEOUT,10);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER,true);
 
         //curl_setopt($curl, CURLOPT_REFERER, 'http://google.com');
@@ -47,7 +54,36 @@ class ReferController extends Controller
             $code = 0;
         }
         curl_close($curl);
+        var_dump($code);
         return $code;
+    }
+
+    public function loadUrlFromFile()
+    {
+        set_time_limit(6000);
+        $file = Yii::$app->basePath.'/files/spam_stata_210914.txt';
+        if (file_exists($file)) {
+            $file_txt = file($file);
+            $n = 0;
+            foreach ($file_txt as $line) {
+                var_dump($n);
+                var_dump($line);
+                if ($this->checker(trim($line)) === 200) {
+                    if (UrlRefer::find()->where(['url' => trim($line)])->limit(1)->one() === NULL) {
+                        var_dump('ok');
+                        $var = [
+                            'url' => trim($line),
+                            'status' => UrlRefer::ACTIVE,
+                        ];
+                        $new_url = new UrlRefer();
+                        $new_url->attributes = $var;
+                        $new_url->save();
+                    }
+                }
+                
+                $n++;
+            }
+        }
     }
     
 }
