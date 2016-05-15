@@ -21,7 +21,7 @@ class ConvertProductController extends Controller
     public function LocalPharmacy()
     {
         set_time_limit(60000);
-        $cities = CityUs::find()->where(['<', 'id', 1500])->all();
+        $cities = CityUs::find()->where(['<', 'id', 2100])->all();
         foreach ($cities as $city) {
             $count = count(PropertyYp::countItem(1, $city->id));
             for ($i=0; $i < $count; $i++) { 
