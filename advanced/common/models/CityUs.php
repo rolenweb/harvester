@@ -92,4 +92,9 @@ class CityUs extends \yii\db\ActiveRecord
     {
         return $this->hasMany(PropertyYp::className(), ['city_id' => 'id']);
     }
+
+    public function getPropertiesYpIndexNumber()
+    {
+        return $this->hasMany(PropertyYp::className(), ['city_id' => 'id'])->indexBy('number');
+    }
 }
