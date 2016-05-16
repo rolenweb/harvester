@@ -6,6 +6,7 @@ use yii\console\Controller;
 use common\models\UsaLocalPharmacy1;
 use common\models\CityUs;
 use common\models\PropertyYp;
+use common\models\PositionProduct;
 
 class ConvertProductController extends Controller
 {
@@ -15,13 +16,16 @@ class ConvertProductController extends Controller
         if ($mode == 'local-pharmacy') {
             $this->localPharmacy();
         }
-        
     }
 
     public function LocalPharmacy()
     {
         set_time_limit(60000);
-        $cities = CityUs::find()->where(['<', 'id', 2100])->all();
+        $position = PositionProduct::find()->where(['table' => 'city_us'])->limit(1)->one();
+        if ($position === null) {
+            return;
+        }
+        $cities = CityUs::find()->where(['between', 'id', $position->current, $position->end])->all();
         foreach ($cities as $city) {
             $count = count(PropertyYp::countItem(1, $city->id));
             for ($i=0; $i < $count; $i++) { 
@@ -90,6 +94,8 @@ class ConvertProductController extends Controller
 
                 }
             }
+            $position->current = CityUs::next($city->id);
+            $position->save();
         }
     }
 
@@ -103,6 +109,8 @@ class ConvertProductController extends Controller
         }
         return $out;
     }
+
+    
     
     
 }
