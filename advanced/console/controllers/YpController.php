@@ -27,11 +27,11 @@ class YpController extends Controller
                     if ($key !== NULL) {
                         $city = CityUs::findOne($position->current);
                         if ($city !== NULL) {
-                            $content = $this->loadPage($key->key, str_replace(' ', '+', $city->name).'%2C+'.$city->state);
+                            $content = $this->loadPage(str_replace(' ', '+', $key->key), str_replace(' ', '+', $city->name).'%2C+'.$city->state);
 
                             if ($content['info']['http_code'] == 200) {
                                 $n_pages = $this->getNpage($content);
-                                $pages = $this->parsePage($key->key, str_replace(' ', '+', $city->name).'%2C+'.$city->state, $n_pages, 'div.info > h3.n > a');
+                                $pages = $this->parsePage(str_replace(' ', '+', $key->key), str_replace(' ', '+', $city->name).'%2C+'.$city->state, $n_pages, 'div.info > h3.n > a');
                                 //var_dump($pages);
                                 if ($pages !== NULL) {
                                     foreach ($pages as $pid => $page) {

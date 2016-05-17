@@ -82,6 +82,38 @@ if ($keysYp !== NULL) {
             }
             
         }
+        if ($keyYp->key == 'payday loans') {
+            for ($i=0; $i < $count; $i++) { 
+                echo Html::beginTag('tr');
+                    echo Html::beginTag('td');
+                        echo $i;
+                    echo Html::endTag('td');
+                    echo Html::beginTag('td');
+                        $properties = PropertyYp::forItem($keyYp->id, $model->id, $i);
+                        if ($properties !== NULL) {
+                            echo Html::beginTag('div',['class' => 'table-responsive']);
+                                echo Html::beginTag('table',['class' => 'table table-bordered']);
+                                foreach ($properties as $property) {
+                                    echo Html::beginTag('tr');
+                                        echo Html::beginTag('td');
+                                            echo $property->type->name;
+                                            
+                                        echo Html::endTag('td');
+                                        echo Html::beginTag('td');
+                                            echo $property->value;
+                                        echo Html::endTag('td');
+                                    echo Html::endTag('tr');
+                                }
+                                echo Html::endTag('table');
+                            echo Html::endTag('div');
+                        }
+                        
+                    echo Html::endTag('td');
+                echo Html::endTag('tr');
+                
+            }
+            
+        }
     }
 }
     echo Html::endTag('table');
