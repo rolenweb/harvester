@@ -8,7 +8,7 @@ use common\models\SettingWpost;
 
 class WpostController extends Controller
 {
-    const IP = '109.184.154.189';
+    const IP = '46.36.220.30';
 
     public function actionIndex()
     {
