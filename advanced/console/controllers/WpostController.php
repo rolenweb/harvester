@@ -32,7 +32,7 @@ class WpostController extends Controller
             self::error('The table of keys is null');
             return;
         }
-        $query =$key['key'];
+        $query = str_replace(' ', '+', $key['key']);
         $user = $setting->user;
         $psw = $this->getPassword($setting->hash);
         $url = 'http://'.$setting->domain.'/xmlrpc.php';
