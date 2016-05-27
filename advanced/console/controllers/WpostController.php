@@ -52,7 +52,7 @@ class WpostController extends Controller
     public function google($query,$ip = '93.120.172.173',$rsz = 8)
     {
         $url = "https://ajax.googleapis.com/ajax/services/search/web?v=1.0&q=".$query."&userip=".$ip."&rsz=".$rsz;
-
+        var_dump( $url);
         $ch = curl_init();
 
         curl_setopt($ch, CURLOPT_URL, $url);
