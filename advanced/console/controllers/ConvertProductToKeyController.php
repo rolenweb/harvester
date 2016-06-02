@@ -90,9 +90,14 @@ class ConvertProductToKeyController extends Controller
     public function filterKey($key)
     {
         $out = $key;
-        $filter = [',','@','#','$','%','^','&','*','(',')','+','=','!','\'','"','`','.','?',':',';'];
+        $filter = [',','@','#','$','%','^','&','*','(',')','+','=','!','\'','"','`','.','?',':',';','-', ' - '];
         foreach ($filter as $item) {
-            $out = str_replace($item, '', $out);
+            if ($item == '-') {
+                $out = str_replace($item, ' ', $out);
+            }else{
+                $out = str_replace($item, '', $out);
+            }
+            
         }
         return $out;
     }
