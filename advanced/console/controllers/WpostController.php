@@ -4,6 +4,7 @@ namespace console\controllers;
 use yii;
 use yii\console\Controller;
 use yii\db\Query;
+use yii\helpers\Console;
 use common\models\SettingWpost;
 
 use console\tools\CurlClient;
@@ -18,10 +19,22 @@ class WpostController extends Controller
 
     public function actionIndex()
     {
-        $this->Wpost();
+        $active = SettingWpost::find()->where(['status' => SettingWpost::ACTIVE])->all();
+        if (count($active) == 0) {
+            self::error('No is active');
+            return;
+        }
+        if (count($active) == 1) {
+            $this->Wpost($active[0]->id);
+        }
+        if (count($active) > 1) {
+            $ind = rand(0, count($active)-1);
+            $this->Wpost($active[$ind]->id);
+        }
+
     }
 
-    public function Wpost()
+    public function Wpost($id)
     {
         $setting = SettingWpost::find()->where(['status' => SettingWpost::ACTIVE])->limit(1)->one();
         if ($setting === null) {
