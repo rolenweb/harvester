@@ -68,4 +68,44 @@ class Domain extends \yii\db\ActiveRecord
             'updated_at' => 'Updated At',
         ];
     }
+
+    public function getProject()
+    {
+        return $this->hasOne(Project::className(), ['id' => 'project_id']);
+    }
+
+    public function getTitleStatus()
+    {
+        if ($this->status == self::ACTIVE) {
+            return 'Active';
+        }
+        if ($this->status == self::PENDING) {
+            return 'Pending';
+        }
+        if ($this->status == self::STOP) {
+            return 'Stop';
+        }
+    }
+
+    public static function dropdown()
+    {
+        return self::find()->select(['id','name'])->all();
+    }
+
+    public function getForecastTraffic()
+    {
+        return $this->hasOne(ForecastTraffic::className(), ['domain_id' => 'id']);
+    }
+    public function getForecastIncome()
+    {
+        return $this->hasOne(ForecastIncome::className(), ['domain_id' => 'id']);
+    }
+    public function getForecastCost()
+    {
+        return $this->hasOne(ForecastCost::className(), ['domain_id' => 'id']);
+    }
+    public function getStatisticsTraffic()
+    {
+        return $this->hasMany(StatisticsTraffic::className(), ['domain_id' => 'id']);
+    }
 }

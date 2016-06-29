@@ -92,4 +92,52 @@ class Project extends \yii\db\ActiveRecord
     {
         return self::find()->select(['id','title'])->all();
     }
+
+    public function getDomains()
+    {
+        return $this->hasMany(Domain::className(), ['project_id' => 'id']);
+    }
+
+    public function getForecastTraffic()
+    {
+        $out = 0;
+        $domains = $this->domains;
+        if ($domains != NUll) {
+            foreach ($domains as $domain) {
+                if ($domain->forecastTraffic != NUll) {
+                    $out += $domain->forecastTraffic->traffic;
+                }
+            }
+        }
+        return $out;
+    }
+
+    public function getForecastIncome()
+    {
+        $out = 0;
+        $domains = $this->domains;
+        if ($domains != NUll) {
+            foreach ($domains as $domain) {
+                if ($domain->forecastIncome != NUll) {
+                    $out += $domain->forecastIncome->income;
+                }
+                
+            }
+        }
+        return $out;
+    }
+
+    public function getForecastCost()
+    {
+        $out = 0;
+        $domains = $this->domains;
+        if ($domains != NUll) {
+            foreach ($domains as $domain) {
+                if ($domain->forecastCost != NUll) {
+                    $out += $domain->forecastCost->cost;
+                }
+            }
+        }
+        return $out;
+    }
 }

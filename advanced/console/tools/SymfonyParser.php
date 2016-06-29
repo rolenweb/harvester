@@ -48,5 +48,6 @@ class SymfonyParser extends Crawler implements ParserInterface
          	return $node->html();          
         });
 	}
+	
 
 }

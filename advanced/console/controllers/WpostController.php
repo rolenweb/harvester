@@ -36,7 +36,7 @@ class WpostController extends Controller
 
     public function Wpost($id)
     {
-        $setting = SettingWpost::find()->where(['status' => SettingWpost::ACTIVE])->limit(1)->one();
+        $setting = SettingWpost::find()->where(['id' => $id])->limit(1)->one();
         if ($setting === null) {
             self::error('Setting is null');
             return;
@@ -60,7 +60,12 @@ class WpostController extends Controller
         $user = $setting->user;
         $psw = $this->getPassword($setting->hash);
         $url = 'http://'.$setting->domain.'/xmlrpc.php';
-        $tags = $this->getTags($key['categories'],$this->cutTags($this->xmlToArray($this->getTerms($url, $user, $psw,'post_tag'))));
+        if (isset($key['categories'])) {
+            $key_tags = $key['categories'];
+        }else if (isset($key['key'])) {
+            $key_tags = $key['key'];
+        }
+        $tags = $this->getTags($key_tags,$this->cutTags($this->xmlToArray($this->getTerms($url, $user, $psw,'post_tag'))));
         $result_google = $this->parsePage($query);//$this->google($query, self::IP, 8);
         $content_post = $this->createContentPost($result_google);
         if ($content_post !== NULL) {

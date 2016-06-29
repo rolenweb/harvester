@@ -10,6 +10,11 @@ use common\models\estimation\Domain;
 /* @var $model common\models\estimation\Domain */
 /* @var $form yii\widgets\ActiveForm */
 
+$get_data = Yii::$app->request->get();
+if (isset($get_data['project_id'])) {
+    $model->project_id = $get_data['project_id'];
+}
+
 echo Html::beginTag('div',['class' => 'domain-form']);
     $form = ActiveForm::begin();
         echo $form->field($model, 'name')->textInput(['maxlength' => true]);

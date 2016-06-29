@@ -3,6 +3,7 @@ AuthName "Specifiers"
 # Can not set relative path for .htpasswd, so it is possible to use link:
 # ln -s /var/www/site_root/.htpasswd /var/www/.htpasswd-specifiers
 AuthUserFile /var/www/admin/www/harvester.devsym.ru/.htpasswd
+#AuthUserFile /home/rolenweb/web/.htpasswd
 Require valid-user
 
 
