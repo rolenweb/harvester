@@ -17,7 +17,7 @@ if ($list != NULL) {
 	}
 }
 //wpost
-//$schedule->command('wpost')->everyTenMinutes();
+$schedule->command('wpost')->everyTenMinutes();
 //wpost
 
 //$schedule->command($var1)->cron('* * * * *');
