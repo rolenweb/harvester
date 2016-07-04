@@ -36,6 +36,8 @@ class WpostController extends Controller
 
     public function Wpost($id)
     {
+        sleep(rand(1,60));
+
         $setting = SettingWpost::find()->where(['id' => $id])->limit(1)->one();
         if ($setting === null) {
             self::error('Setting is null');
