@@ -9,6 +9,7 @@ use common\models\CityUs;
 use common\models\PropertyYp;
 use common\models\PositionProduct;
 use common\models\wpost\Usaloans;
+use common\models\wpost\Roofing;
 
 class ConvertProductController extends Controller
 {
@@ -23,6 +24,9 @@ class ConvertProductController extends Controller
         }
         if ($mode == 'usaloans') {
             $this->usaLoans();
+        }
+        if ($mode == 'roofing') {
+            $this->roofing();
         }
     }
 
@@ -202,7 +206,7 @@ class ConvertProductController extends Controller
     public function usaLoans()
     {
         set_time_limit(60000);
-        $file_name = Yii::$app->basePath.'/files/loans/usaloans_24_06_16.txt';
+        $file_name = Yii::$app->basePath.'/files/usaloans/usaloans_24_06_16.txt';
         
         if (file_exists($file_name)){
             $file = file($file_name);
@@ -214,7 +218,20 @@ class ConvertProductController extends Controller
         }
     }
     
-    
+    public function roofing()
+    {
+        set_time_limit(60000);
+        $file_name = Yii::$app->basePath.'/files/roofing/roofing_1_0.txt';
+        
+        if (file_exists($file_name)){
+            $file = file($file_name);
+            foreach ($file as $key) {
+                $new_key = new Roofing();
+                $new_key->key = trim($key);
+                $new_key->save();
+            }
+        }
+    }
     
 }
 ?>
