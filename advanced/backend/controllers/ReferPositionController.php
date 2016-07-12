@@ -3,17 +3,16 @@
 namespace backend\controllers;
 
 use Yii;
-use common\models\refer\UrlRefer;
-use common\models\refer\UrlReferSearch;
+use common\models\refer\Position;
+use common\models\refer\PositionSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
 
 /**
- * UrlReferController implements the CRUD actions for UrlRefer model.
+ * ReferPositionController implements the CRUD actions for Position model.
  */
-class UrlReferController extends Controller
+class ReferPositionController extends Controller
 {
     /**
      * @inheritdoc
@@ -21,20 +20,6 @@ class UrlReferController extends Controller
     public function behaviors()
     {
         return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'rules' => [
-                    [
-                        'actions' => ['login', 'error'],
-                        'allow' => true,
-                    ],
-                    [
-                        'actions' => ['logout', 'index', 'create', 'view', 'update', 'delete'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -45,12 +30,12 @@ class UrlReferController extends Controller
     }
 
     /**
-     * Lists all UrlRefer models.
+     * Lists all Position models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new UrlReferSearch();
+        $searchModel = new PositionSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -60,7 +45,7 @@ class UrlReferController extends Controller
     }
 
     /**
-     * Displays a single UrlRefer model.
+     * Displays a single Position model.
      * @param integer $id
      * @return mixed
      */
@@ -72,13 +57,13 @@ class UrlReferController extends Controller
     }
 
     /**
-     * Creates a new UrlRefer model.
+     * Creates a new Position model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new UrlRefer();
+        $model = new Position();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -90,7 +75,7 @@ class UrlReferController extends Controller
     }
 
     /**
-     * Updates an existing UrlRefer model.
+     * Updates an existing Position model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -109,7 +94,7 @@ class UrlReferController extends Controller
     }
 
     /**
-     * Deletes an existing UrlRefer model.
+     * Deletes an existing Position model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -122,15 +107,15 @@ class UrlReferController extends Controller
     }
 
     /**
-     * Finds the UrlRefer model based on its primary key value.
+     * Finds the Position model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return UrlRefer the loaded model
+     * @return Position the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = UrlRefer::findOne($id)) !== null) {
+        if (($model = Position::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

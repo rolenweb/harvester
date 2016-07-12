@@ -3,17 +3,16 @@
 namespace backend\controllers;
 
 use Yii;
-use common\models\refer\UrlRefer;
-use common\models\refer\UrlReferSearch;
+use common\models\refer\Domains;
+use common\models\refer\DomainsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
 
 /**
- * UrlReferController implements the CRUD actions for UrlRefer model.
+ * ReferDomainsController implements the CRUD actions for Domains model.
  */
-class UrlReferController extends Controller
+class ReferDomainsController extends Controller
 {
     /**
      * @inheritdoc
@@ -21,20 +20,6 @@ class UrlReferController extends Controller
     public function behaviors()
     {
         return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'rules' => [
-                    [
-                        'actions' => ['login', 'error'],
-                        'allow' => true,
-                    ],
-                    [
-                        'actions' => ['logout', 'index', 'create', 'view', 'update', 'delete'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -45,12 +30,12 @@ class UrlReferController extends Controller
     }
 
     /**
-     * Lists all UrlRefer models.
+     * Lists all Domains models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new UrlReferSearch();
+        $searchModel = new DomainsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -60,7 +45,7 @@ class UrlReferController extends Controller
     }
 
     /**
-     * Displays a single UrlRefer model.
+     * Displays a single Domains model.
      * @param integer $id
      * @return mixed
      */
@@ -72,13 +57,13 @@ class UrlReferController extends Controller
     }
 
     /**
-     * Creates a new UrlRefer model.
+     * Creates a new Domains model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new UrlRefer();
+        $model = new Domains();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -90,7 +75,7 @@ class UrlReferController extends Controller
     }
 
     /**
-     * Updates an existing UrlRefer model.
+     * Updates an existing Domains model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -109,7 +94,7 @@ class UrlReferController extends Controller
     }
 
     /**
-     * Deletes an existing UrlRefer model.
+     * Deletes an existing Domains model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -122,15 +107,15 @@ class UrlReferController extends Controller
     }
 
     /**
-     * Finds the UrlRefer model based on its primary key value.
+     * Finds the Domains model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return UrlRefer the loaded model
+     * @return Domains the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = UrlRefer::findOne($id)) !== null) {
+        if (($model = Domains::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

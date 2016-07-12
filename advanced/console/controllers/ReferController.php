@@ -3,7 +3,9 @@ namespace console\controllers;
 
 use yii;
 use yii\console\Controller;
-use common\models\UrlRefer;
+use common\models\refer\UrlRefer;
+use common\models\refer\Position;
+use common\models\refer\Domains;
 
 class ReferController extends Controller
 {
@@ -11,7 +13,17 @@ class ReferController extends Controller
     public function actionIndex($mode = 'refer')
     {
         if ($mode == 'refer') {
-            $this->refer('http://japanesecomposers.info/ja/modules/popnupblog/index.php?postid=243','http://sedrfty777.com');
+            $positions = Position::find()->where(['status' => Position::ACTIVE])->all();
+            if ($positions === null) {
+                return false;
+            }
+            foreach ($positions as $position) {
+                $this->refer($position->url->url,$position->domain->url);
+                $position->url_id = UrlRefer::next($position->url_id);
+                $position->save();
+                
+            }
+            //$this->refer('http://japanesecomposers.info/ja/modules/popnupblog/index.php?postid=243','http://sedrfty777.com');
         }
         if ($mode == 'checker') {
             var_dump($this->checker('http://worldsportsclub.org/modules/popnupblog/index.php?postid=149'));
@@ -24,6 +36,7 @@ class ReferController extends Controller
 
     public function refer($url, $referer)
     {
+        
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_NOBODY,true);

@@ -1,35 +1,39 @@
 <?php
 
-namespace common\models;
+namespace common\models\refer;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
+
 /**
- * This is the model class for table "url".
+ * This is the model class for table "domains".
  *
  * @property integer $id
+ * @property string $domain
  * @property string $url
  * @property integer $status
  * @property integer $created_at
  * @property integer $updated_at
  */
-class UrlRefer extends \yii\db\ActiveRecord
+class Domains extends \yii\db\ActiveRecord
 {
-    const ACTIVE = 10;
-    const ERROR = 5;
-    /**
-     * @inheritdoc
-     */
-    public static function tableName()
-    {
-        return 'url';
-    }
+
+    const ACTIVE = 1;
+    const PENDING = 2;
+    const STOP = 3;
 
     public function behaviors()
     {
         return [
             TimestampBehavior::className(),
         ];
+    }
+    /**
+     * @inheritdoc
+     */
+    public static function tableName()
+    {
+        return 'domains';
     }
 
     /**
@@ -47,7 +51,7 @@ class UrlRefer extends \yii\db\ActiveRecord
     {
         return [
             [['status', 'created_at', 'updated_at'], 'integer'],
-            [['url'], 'string', 'max' => 255],
+            [['domain', 'url'], 'string', 'max' => 255],
         ];
     }
 
@@ -58,10 +62,29 @@ class UrlRefer extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
+            'domain' => 'Domain',
             'url' => 'Url',
             'status' => 'Status',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
+    }
+
+    public function getStatus()
+    {
+        if ($this->status === self::ACTIVE) {
+            return 'Active';
+        }
+        if ($this->status === self::PENDING) {
+            return 'Pending';
+        }
+        if ($this->status === self::STOP) {
+            return 'Stop';
+        }
+    }
+
+    public static function dropdown()
+    {
+        return self::find()->select(['id','domain'])->all();
     }
 }

@@ -1,16 +1,16 @@
 <?php
 
-namespace common\models;
+namespace common\models\refer;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\UrlRefer;
+use common\models\refer\Domains;
 
 /**
- * UrlReferSearch represents the model behind the search form about `common\models\UrlRefer`.
+ * DomainsSearch represents the model behind the search form about `common\models\refer\Domains`.
  */
-class UrlReferSearch extends UrlRefer
+class DomainsSearch extends Domains
 {
     /**
      * @inheritdoc
@@ -19,7 +19,7 @@ class UrlReferSearch extends UrlRefer
     {
         return [
             [['id', 'status', 'created_at', 'updated_at'], 'integer'],
-            [['url'], 'safe'],
+            [['domain', 'url'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class UrlReferSearch extends UrlRefer
      */
     public function search($params)
     {
-        $query = UrlRefer::find();
+        $query = Domains::find();
 
         // add conditions that should always apply here
 
@@ -65,7 +65,8 @@ class UrlReferSearch extends UrlRefer
             'updated_at' => $this->updated_at,
         ]);
 
-        $query->andFilterWhere(['like', 'url', $this->url]);
+        $query->andFilterWhere(['like', 'domain', $this->domain])
+            ->andFilterWhere(['like', 'url', $this->url]);
 
         return $dataProvider;
     }
