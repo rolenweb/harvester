@@ -35,7 +35,7 @@ echo Html::beginTag('div',['class' => 'position-index']);
                 'attribute'=>'url_id',
                 'label' => 'Url',
                 'content'=>function($data){
-                    return $data->url->url;
+                    return $data->url->url.'('.$data->url_id.')';
                 }
             ],
             [
