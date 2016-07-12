@@ -20,6 +20,10 @@ if ($list != NULL) {
 $schedule->command('wpost')->everyTenMinutes();
 //wpost
 
+//refer
+$schedule->command('refer')->cron('* * * * *');
+//refer
+
 //$schedule->command($var1)->cron('* * * * *');
 //$schedule->command('notice')->cron('* * * * *');
 //$schedule->command('contract-nonconformance')->cron('* * * * *');
