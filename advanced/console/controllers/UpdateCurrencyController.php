@@ -30,16 +30,59 @@ use common\models\currency\PlnRate;
 use common\models\currency\RonRate;
 use common\models\currency\RubRate;
 use common\models\currency\SekRate;
+use common\models\currency\SgdRate;
+use common\models\currency\ThbRate;
+use common\models\currency\TryRate;
+use common\models\currency\ZarRate;
+use common\models\currency\UsdRate;
+use common\models\currency\Schedule;
 
 
 class UpdateCurrencyController extends Controller
 {
     const HISTORY_DATE_CURRENCY_RATE = "2000-01-01";
     
+    
     public function actionIndex($currency = null)
     {
         if ($currency === null) {
-            # code...
+            $list = [
+                'USD',
+                'EUR',
+                'AUD',
+                'BGN',
+                'BRL',
+                'CAD',
+                'CHF',
+                'CNY',
+                'CZK',
+                'DKK',
+                'GBP',
+                'HKD',
+                'HRK',
+                'HUF',
+                'IDR',
+                'ILS',
+                'INR',
+                'JPY',
+                'KRW',
+                'MXN',
+                'MYR',
+                'NOK',
+                'NZD',
+                'PHP',
+                'PLN',
+                'RON',
+                'RUB',
+                'SEK',
+                'SGD',
+                'THB',
+                'TRY',
+                'ZAR',
+            ];
+            foreach ($list as $currency) {
+                $this->updateCurrencyRate($currency);    
+            }
         }else{
             $this->updateCurrencyRate($currency);
         }
@@ -157,6 +200,7 @@ class UpdateCurrencyController extends Controller
             $rate = $this->loadCurrencyRates($currnecy, $start_date);
             
             if ($rate != NULL && property_exists($rate, 'rates')) {
+                $random_currency = $this->randomCurrency($currnecy);
                 foreach ($rate->rates as $key => $value) {
                     if ($currnecy == 'USD') {
                         $new_rec = new UsdRate();
@@ -258,8 +302,11 @@ class UpdateCurrencyController extends Controller
                     $new_rec->date = $start_date;
                     $new_rec->code = $key;
                     $new_rec->rate = $value;
-                    $new_rec->save();
-                            
+                    if ($new_rec->save()) {
+                        if ($random_currency == $key) {
+                            $this->newSchedule($currnecy,$key,$start_date);
+                        }
+                    }
                 }
             }
             
@@ -286,7 +333,60 @@ class UpdateCurrencyController extends Controller
     }
     
     
-    
+    public function randomCurrency($currency)
+    {
+        $list = [
+            'USD',
+            'EUR',
+            'AUD',
+            'BGN',
+            'BRL',
+            'CAD',
+            'CHF',
+            'CNY',
+            'CZK',
+            'DKK',
+            'GBP',
+            'HKD',
+            'HRK',
+            'HUF',
+            'IDR',
+            'ILS',
+            'INR',
+            'JPY',
+            'KRW',
+            'MXN',
+            'MYR',
+            'NOK',
+            'NZD',
+            'PHP',
+            'PLN',
+            'RON',
+            'RUB',
+            'SEK',
+            'SGD',
+            'THB',
+            'TRY',
+            'ZAR',
+        ];
+        $key = array_search($currency,$list);
+        if($key!==false){
+            unset($list[$key]);
+        }
+        $new_list = array_values($list);
+        return $new_list[rand(0,count($new_list)-1)];
+    }
+
+    public function newSchedule($cur1,$cur2,$date)
+    {
+        $new_schedule = new Schedule();
+        $new_schedule->cur1 = $cur1;
+        $new_schedule->cur2 = $cur2;
+        $new_schedule->status = 1;
+        $new_schedule->date = date("Y-m-d",strtotime($date));
+        $new_schedule->save();
+        return;
+    }
     
 }
 ?>

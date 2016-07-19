@@ -4,6 +4,7 @@ namespace console\controllers;
 use yii;
 use yii\console\Controller;
 use common\models\CityUs;
+use common\models\currency\Mask;
 
 
 class ServiceController extends Controller
@@ -60,6 +61,27 @@ class ServiceController extends Controller
         }
     }
 
+
+    public function actionLoadMaskCurrency()
+    {
+        set_time_limit(6000);
+        
+        $file_in = Yii::$app->basePath.'/files/masks/currency.txt';
+        
+        
+        if (file_exists($file_in)) {
+
+            $file_txt = file($file_in);
+            
+            
+            foreach ($file_txt as $line) {
+                $new = new Mask();
+                $new->mask = $line;
+                $new->save();
+            }
+            
+        }
+    }
     
 }
 ?>

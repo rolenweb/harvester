@@ -20,6 +20,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'keys')->textInput(['maxlength' => true]) ?>
 
+    <?= $form->field($model, 'type')->textInput(['maxlength' => true]) ?>
+
     <?= Html::activeDropDownList($model, 'status', [5 => 'Pending', 10 => 'Active', 15 => 'Finish'],['class' => 'form-control']); ?>
 
     

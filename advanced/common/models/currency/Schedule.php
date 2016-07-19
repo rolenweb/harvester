@@ -1,28 +1,31 @@
 <?php
 
-namespace common\models\refer;
+namespace common\models\currency;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
 /**
- * This is the model class for table "url".
+ * This is the model class for table "schedule".
  *
  * @property integer $id
- * @property string $url
+ * @property string $date
+ * @property string $cur1
+ * @property string $cur2
  * @property integer $status
  * @property integer $created_at
  * @property integer $updated_at
  */
-class UrlRefer extends \yii\db\ActiveRecord
+class Schedule extends \yii\db\ActiveRecord
 {
-    const ACTIVE = 10;
-    const ERROR = 5;
+
+    const PENDING = 1;
+    const POSTED = 2;
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'url';
+        return 'schedule';
     }
 
     public function behaviors()
@@ -37,7 +40,7 @@ class UrlRefer extends \yii\db\ActiveRecord
      */
     public static function getDb()
     {
-        return Yii::$app->get('db3');
+        return Yii::$app->get('db6');
     }
 
     /**
@@ -46,8 +49,9 @@ class UrlRefer extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['date'], 'safe'],
             [['status', 'created_at', 'updated_at'], 'integer'],
-            [['url'], 'string', 'max' => 255],
+            [['cur1', 'cur2'], 'string', 'max' => 255],
         ];
     }
 
@@ -58,29 +62,12 @@ class UrlRefer extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'url' => 'Url',
+            'date' => 'Date',
+            'cur1' => 'Cur1',
+            'cur2' => 'Cur2',
             'status' => 'Status',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
-    }
-
-    public static function start()
-    {
-        return self::find()->orderBy(['id' => SORT_ASC])->limit(1)->one();
-    }
-    public static function end()
-    {
-        return self::find()->orderBy(['id' => SORT_DESC])->limit(1)->one();
-    }
-
-    public static function next($id)
-    {
-        $next_obj = self::find()->where(['and','id > :id'],[':id' => $id])->orderBy(['id' => SORT_ASC])->limit(1)->one();
-        if ($next_obj != NULL) {
-            return $next_obj->id;
-        }else{
-            return self::start()->id;
-        }
     }
 }

@@ -6,6 +6,8 @@ use yii\console\Controller;
 use yii\db\Query;
 use yii\helpers\Console;
 use common\models\SettingWpost;
+use common\models\currency\Schedule;
+use common\models\currency\Mask;
 
 use console\tools\CurlClient;
 use console\tools\SymfonyParser;
@@ -17,20 +19,26 @@ class WpostController extends Controller
 {
     const IP = '46.36.220.30';
 
-    public function actionIndex()
+    public function actionIndex($type = 'classic')
     {
-        $active = SettingWpost::find()->where(['status' => SettingWpost::ACTIVE])->all();
+        $active = SettingWpost::find()->where(['status' => SettingWpost::ACTIVE, 'type' => $type])->all();
+        
         if (count($active) == 0) {
             self::error('No is active');
             return;
         }
-        if (count($active) == 1) {
-            $this->Wpost($active[0]->id);
+        if ($type === 'classic') {
+            if (count($active) == 1) {
+                $this->Wpost($active[0]->id);
+            }
+            if (count($active) > 1) {
+                $ind = rand(0, count($active)-1);
+                $this->Wpost($active[$ind]->id);
+            }
+        }else if ($type == 'currency') {
+            $this->WpostCurrency($active[0]->id);
         }
-        if (count($active) > 1) {
-            $ind = rand(0, count($active)-1);
-            $this->Wpost($active[$ind]->id);
-        }
+        
 
     }
 
@@ -84,6 +92,54 @@ class WpostController extends Controller
         }
 
         $this->nextPosition($setting);
+    }
+
+    public function WpostCurrency($id)
+    {
+        sleep(rand(1,60));
+
+        $setting = SettingWpost::find()->where(['id' => $id])->limit(1)->one();
+        if ($setting === null) {
+            self::error('Setting is null');
+            return;
+        }
+        
+        $schedule = Schedule::findOne(['status' => Schedule::PENDING]);
+        if ($schedule === null) {
+            self::error('The schedule is null');
+            return;
+        }
+        $masks = Mask::find()->all();
+        $mask = $masks[rand(0,count($masks)-1)];
+
+        $key = str_replace('cur1', trim(strtolower($schedule->cur1)), trim($mask->mask));
+        $key = str_replace('cur2', trim(strtolower($schedule->cur2)), $key);
+        
+        $query = str_replace(' ', '+', strtolower($key.' on '.date("F d Y",strtotime($schedule->date))));
+        $user = $setting->user;
+        $psw = $this->getPassword($setting->hash);
+        $url = 'http://'.$setting->domain.'/xmlrpc.php';
+        $key_tags = $key;
+        
+        $tags = $this->getTags($key_tags,$this->cutTags($this->xmlToArray($this->getTerms($url, $user, $psw,'post_tag'))));
+        var_dump($query);
+        $result_google = $this->parsePage($query);//$this->google($query, self::IP, 8);
+
+        $content_post = $this->createContentPost($result_google);
+        if ($content_post !== NULL) {
+            $content_wp = array(
+                'post_type' => 'post',
+                'post_content' => $content_post,
+                'post_title' => ucfirst($key.' on '.date("F d Y",strtotime($schedule->date))),
+                'post_status' => 'publish',
+                'terms' => [
+                   'post_tag' => $tags,
+                ],
+            );
+            $wp_res = $this->getResponseError($this->xmlRpc($url, $content_wp, $user, $psw));
+        }
+        $schedule->status = Schedule::POSTED;
+        $schedule->save();
     }
 
     protected function getPassword($hash)

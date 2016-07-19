@@ -51,7 +51,7 @@ class SettingWpost extends \yii\db\ActiveRecord
     {
         return [
             [['status', 'created_at', 'updated_at'], 'integer'],
-            [['domain', 'hash', 'keys','user'], 'string', 'max' => 255],
+            [['domain', 'hash', 'keys','user', 'type'], 'string', 'max' => 255],
         ];
     }
 
@@ -66,6 +66,7 @@ class SettingWpost extends \yii\db\ActiveRecord
             'hash' => 'Hash',
             'keys' => 'Keys',
             'user' => 'User',
+            'type' => 'Type',
             'status' => 'Status',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
